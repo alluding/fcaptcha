@@ -25,7 +25,7 @@ class hCaptcha(Session):
         proxy: str,
         **kwargs: typing.Any
     ) -> Self:
-        if not proxy or site_key or host:
+        if not all((proxy, site_key, host)):
             raise InvalidArgs(
                 "You're missing one or more of the required arguments!"
             )
