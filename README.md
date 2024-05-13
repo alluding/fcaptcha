@@ -1,5 +1,5 @@
 # FCaptcha
-### An unofficial Python wrapper for FCaptcha. 
+### An unofficial Python wrapper for [FCaptcha](https://fcaptcha.lol). 
 
 # Solves
 
