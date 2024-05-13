@@ -5,6 +5,13 @@ class InvalidJSON(Exception):
     pass
 
 
+class InvalidArgs(Exception):
+    """
+    Base exception raised when the incorrect arguments are given, or are not given.
+    """
+    pass
+
+
 class InvalidAPIKey(Exception):
     """
     Base exception raised when the authorization/API key is invalid.

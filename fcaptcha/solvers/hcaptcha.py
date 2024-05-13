@@ -1,4 +1,6 @@
 from ..session import Session
+from ..exceptions import InvalidArgs
+
 import typing
 
 
@@ -17,6 +19,11 @@ class hCaptcha(Session):
         proxy: str,
         **kwargs: typing.Any
     ) -> str:
+        if not proxy or site_key or host:
+            raise InvalidArgs(
+                "You're missing one or more of the required arguments!"
+            )
+
         payload: typing.Dict[str, str] = self.add_data(
             payload={
                 "host": host,
