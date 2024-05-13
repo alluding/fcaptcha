@@ -1,9 +1,13 @@
+from __future__ import annotations
+
 from ..session import Session
-from ..exceptions import InvalidArgs
+from ..exceptions import InvalidArgs, TaskNotFound
 
 import typing
 
-
+if typing.TYPE_CHECKING:
+    from typing_extensions import Self
+    
 class hCaptcha(Session):
     """
     Class for solving hCaptcha.
@@ -11,6 +15,8 @@ class hCaptcha(Session):
 
     def __init__(self, api_key: str) -> None:
         super().__init__(api_key=api_key)
+        
+        self.task_id: str = None
 
     def create_task(
         self,
@@ -18,7 +24,7 @@ class hCaptcha(Session):
         host: str,
         proxy: str,
         **kwargs: typing.Any
-    ) -> str:
+    ) -> Self:
         if not proxy or site_key or host:
             raise InvalidArgs(
                 "You're missing one or more of the required arguments!"
@@ -34,18 +40,25 @@ class hCaptcha(Session):
             user_agent=kwargs.get("user_agent")
         )
 
-        return self.make_request(
+        response = self.make_request(
             action="create",
             method="post",
             json=payload
-        ).json()["task"].get("task_id")
+        ).json()["task"]
 
-    def task_result(self, task_id: str) -> str:
+        self.task_id: str = response.get("task_id")
+
+        return self
+
+    def get_result(self) -> str:
+        if not self.task_id:
+            raise TaskNotFound("No task ID available. Create a task first.")
+
         while True:
             response = self.make_request(
                 action="verify",
                 method="get",
-                json={"task_id": task_id}
+                json={"task_id": self.task_id}
             ).json()["task"]
 
             if response.get("state") == "processing":
