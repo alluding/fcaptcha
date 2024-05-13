@@ -7,6 +7,6 @@ task: str = solver.create_task(
     host="https://guns.lol",
     proxy=""
 )
-solved: str = solver.task_result(task_id=task)
+solved: str = task.get_result()
 
-print(task, solved)
+print(task.task_id, solved)
