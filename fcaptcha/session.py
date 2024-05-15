@@ -2,8 +2,10 @@ import typing
 
 from requests import Session, Response
 from .exceptions import UnknownError
-from .utils import check_exc
+from .utils import check_exc, check_balance
 
+import threading
+import time
 
 class Session(Session):
     """
@@ -17,6 +19,18 @@ class Session(Session):
         super().__init__()
 
         self.headers["authorization"]: str = api_key
+
+        self.bal: threading.Thread = threading.Thread(
+            target=self.run_bal_check,
+            args=(api_key, 4)
+        )
+        self.bal.daemon: bool = True
+        self.bal.start()
+
+    def run_bal_check(self, key: str, sleep: int = 10) -> None:
+        while True:
+            check_balance(key)
+            time.sleep(sleep)
 
     def make_request(
         self,
