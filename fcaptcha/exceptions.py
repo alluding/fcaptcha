@@ -4,13 +4,17 @@ class InvalidJSON(Exception):
     """
     pass
 
-
 class InvalidArgs(Exception):
     """
     Base exception raised when the incorrect arguments are given, or are not given.
     """
     pass
 
+class NoBalance(Exception):
+    """
+    Base exception raised when a key has no balance.
+    """
+    pass
 
 class InvalidAPIKey(Exception):
     """
@@ -18,13 +22,11 @@ class InvalidAPIKey(Exception):
     """
     pass
 
-
 class TaskNotFound(Exception):
     """
     Base exception raised when the task ID isn't found.
     """
     pass
-
 
 class UnknownError(Exception):
     """
