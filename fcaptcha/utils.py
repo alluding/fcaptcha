@@ -10,7 +10,7 @@ from requests import Response, get
 import typing
 
 def check_balance(key: str) -> str:
-    response: typing.Dict[str, typing.Union[str, float, int]] = get(
+    response: typing.Dict[str, typing.Union[float, int]] = get(
         f"https://api.fcaptcha.lol/get_balance/{key}"
     ).json()
     balance: float | int = response.get("balance")
