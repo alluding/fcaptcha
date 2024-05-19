@@ -1,13 +1,13 @@
 from __future__ import annotations
+import typing
+import time
 
 from ..session import Session
 from ..exceptions import InvalidArgs, TaskNotFound
 
-import typing
-
 if typing.TYPE_CHECKING:
     from typing_extensions import Self
-    
+
 class hCaptcha(Session):
     """
     Class for solving hCaptcha.
@@ -15,7 +15,6 @@ class hCaptcha(Session):
 
     def __init__(self, api_key: str) -> None:
         super().__init__(api_key=api_key)
-        
         self.task_id: str = None
 
     def create_task(
@@ -25,6 +24,22 @@ class hCaptcha(Session):
         proxy: str,
         **kwargs: typing.Any
     ) -> Self:
+        """
+        Create a hCaptcha solving task.
+
+        Args:
+            site_key (str): The hCaptcha site key for the task.
+            host (str): The host of the site for the task.
+            proxy (str): The proxy for the task.
+            **kwargs: Optional arguments for creating a task, including `rq_data`, and `user_agent`.
+
+        Returns:
+            Self: The instance of the hCaptcha solver. (allows chaining of `get_result` after creating task)
+        
+        Raises:
+            InvalidArgs: If one or more required arguments are missing.
+        """
+    
         if not all((proxy, site_key, host)):
             raise InvalidArgs(
                 "You're missing one or more of the required arguments!"
@@ -51,6 +66,19 @@ class hCaptcha(Session):
         return self
 
     def get_result(self, sleep: typing.Optional[int] = 3) -> str:
+        """
+        Get the result of the hCaptcha solving task.
+
+        Args:
+            sleep (int, optional): The sleep interval in seconds between result checks. Defaults to 3.
+
+        Returns:
+            str: The solved hCaptcha key.
+
+        Raises:
+            TaskNotFound: If no task ID is available. Create a task first.
+        """
+        
         if not self.task_id:
             raise TaskNotFound("No task ID available. Create a task first.")
 
