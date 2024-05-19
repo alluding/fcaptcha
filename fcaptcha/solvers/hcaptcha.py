@@ -50,11 +50,13 @@ class hCaptcha(Session):
 
         return self
 
-    def get_result(self) -> str:
+    def get_result(self, sleep: typing.Optional[int] = 3) -> str:
         if not self.task_id:
             raise TaskNotFound("No task ID available. Create a task first.")
 
         while True:
+            time.sleep(sleep)
+            
             response = self.make_request(
                 action="verify",
                 method="get",
