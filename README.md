@@ -1,13 +1,14 @@
 # FCaptcha
-### An unofficial Python wrapper for [FCaptcha](https://fcaptcha.lol). 
+### An unofficial Python wrapper for [FCaptcha](https://fcaptcha.lol).
 
 # Solves
 
 - hCaptcha
+- reCaptcha (`Coming soon, as they have yet to add it`)
 
-More soon.
+More coming soon.
 
-Look at `example.py` to learn how to use.
+Look at `example.py` to learn how to use it.
 
 # Installation
 
